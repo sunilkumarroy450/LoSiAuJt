@@ -8,8 +8,6 @@ require("dotenv").config(); // Loading environment variables from .env file
 require("./config/db"); // Establishing database connection
 //should be called early in your server file to ensure database is connected before any route tries to use it.
 
-const PORT = process.env.PORT || 8080; // Defining the server port
-
 app.use(bodyParser.json()); // Parsing incoming JSON requests
 app.use(cors()); // Enabling CORS for all routes
 app.use("/auth", authRouter); // Mounting auth routes under /auth
@@ -18,9 +16,16 @@ app.get("/test", (req, res) => {
   res.json("Ram Ram!!!");
 }); // Test route to verify server is running
 
-app.listen(PORT, () => {
-  console.log(`Server is started & listening on port ${PORT}`);
-}); // Starting the server and listening on the defined port
+// LOCAL: only run listen if not in Vercel serverless
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 8080;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Export the app for Vercel
+module.exports = app; // Starting the server and listening on the defined port
 
 /*
 1. What if you don't add body-parser?
