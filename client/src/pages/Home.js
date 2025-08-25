@@ -23,7 +23,7 @@ const Home = () => {
 
   const fetchProducts = async () => {
     try {
-      const url = "http://localhost:8080/auth/product/products";
+      const url = "https://lo-si-au-jt.vercel.app/auth/product/products";
       const resp = await fetch(url, {
         headers: {
           Authorization: localStorage.getItem("token"),
